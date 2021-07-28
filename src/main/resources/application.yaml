@@ -1,0 +1,31 @@
+server:
+  port: 8080
+
+spring:
+  config:
+    import: file:.env[.properties]
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/microsservico_email?createDatabaseIfNotExist=true
+    username: postgres
+    password: root
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQL9Dialect
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${GMAIL_USERNAME}
+    password: ${GMAIL_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
