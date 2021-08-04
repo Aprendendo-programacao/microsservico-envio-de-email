@@ -6,8 +6,9 @@ import me.gabreuw.microsservicoenviodeemail.domain.enums.StatusEmail;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
-import static javax.persistence.GenerationType.IDENTITY;
+import static javax.persistence.GenerationType.AUTO;
 
 @Data
 @Entity
@@ -15,8 +16,8 @@ import static javax.persistence.GenerationType.IDENTITY;
 public class EmailModel implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = IDENTITY)
-    private Long emailId;
+    @GeneratedValue(strategy = AUTO)
+    private UUID emailId;
 
     private String ownerRef;
 

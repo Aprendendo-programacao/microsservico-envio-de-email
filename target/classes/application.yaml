@@ -29,3 +29,7 @@ spring:
           auth: true
           starttls:
             enable: true
+
+  rabbitmq:
+    addresses: amqps://pucbrppc:gNz7MD24X0NuHY-y2NrrOdHYoT9fqAcg@elk.rmq2.cloudamqp.com/pucbrppc
+    queue: microsservico.envio.de.email
