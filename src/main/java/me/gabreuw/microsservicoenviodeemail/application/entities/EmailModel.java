@@ -1,7 +1,7 @@
-package me.gabreuw.microsservicoenviodeemail.domain.model;
+package me.gabreuw.microsservicoenviodeemail.application.entities;
 
 import lombok.Data;
-import me.gabreuw.microsservicoenviodeemail.domain.enums.StatusEmail;
+import me.gabreuw.microsservicoenviodeemail.application.entities.enums.StatusEmail;
 
 import javax.persistence.*;
 import java.io.Serializable;

@@ -1,12 +1,11 @@
-package me.gabreuw.microsservicoenviodeemail.api.resource;
+package me.gabreuw.microsservicoenviodeemail.adapters.inbound.resources;
 
 import lombok.RequiredArgsConstructor;
-import me.gabreuw.microsservicoenviodeemail.api.dto.EmailDTO;
-import me.gabreuw.microsservicoenviodeemail.domain.model.EmailModel;
-import me.gabreuw.microsservicoenviodeemail.infrastructure.service.EmailService;
+import me.gabreuw.microsservicoenviodeemail.adapters.inbound.dtos.EmailDTO;
+import me.gabreuw.microsservicoenviodeemail.application.entities.EmailModel;
+import me.gabreuw.microsservicoenviodeemail.application.services.EmailServiceImpl;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,7 +19,7 @@ import static org.springframework.http.HttpStatus.CREATED;
 @RestController
 public class EmailResource {
 
-    private final EmailService SERVICE;
+    private final EmailServiceImpl SERVICE;
 
     @PostMapping(path = "/sending-email")
     public ResponseEntity<EmailModel> sendingEmail(

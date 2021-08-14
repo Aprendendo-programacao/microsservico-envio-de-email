@@ -1,14 +1,18 @@
 server:
   port: 8080
 
-spring:
-  config:
-    import: file:.env[.properties]
-
-  datasource:
+database:
+  configuration:
     url: jdbc:postgresql://localhost:5432/microsservico_email?createDatabaseIfNotExist=true
     username: postgres
     password: root
+
+spring:
+  main:
+    allow-bean-definition-overriding: true
+
+  config:
+    import: file:.env[.properties]
 
   jpa:
     hibernate:
@@ -31,5 +35,5 @@ spring:
             enable: true
 
   rabbitmq:
-    addresses: ${RABBITMQ_ADDRESSES}
+    uri: ${RABBITMQ_URI}
     queue: ${RABBITMQ_QUEUE}
