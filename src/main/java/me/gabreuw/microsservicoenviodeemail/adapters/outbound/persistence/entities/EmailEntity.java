@@ -1,22 +1,19 @@
-package me.gabreuw.microsservicoenviodeemail.application.entities;
+package me.gabreuw.microsservicoenviodeemail.adapters.outbound.persistence.entities;
 
 import lombok.Data;
-import me.gabreuw.microsservicoenviodeemail.application.entities.enums.StatusEmail;
+import me.gabreuw.microsservicoenviodeemail.application.domain.enums.StatusEmail;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-import static javax.persistence.GenerationType.AUTO;
-
-@Data
 @Entity
-@Table(name = "tb_email")
-public class EmailModel implements Serializable {
+@Table(name = "EMAIL")
+@Data
+public class EmailEntity {
 
     @Id
-    @GeneratedValue(strategy = AUTO)
+    @GeneratedValue
     private UUID emailId;
 
     private String ownerRef;
