@@ -1,38 +1,76 @@
 package me.gabreuw.microsservicoenviodeemail.adapters.inbound.resources;
 
 import lombok.RequiredArgsConstructor;
-import me.gabreuw.microsservicoenviodeemail.adapters.inbound.dtos.EmailDTO;
-import me.gabreuw.microsservicoenviodeemail.application.entities.EmailModel;
-import me.gabreuw.microsservicoenviodeemail.application.services.EmailServiceImpl;
+import me.gabreuw.microsservicoenviodeemail.adapters.dtos.EmailDTO;
+import me.gabreuw.microsservicoenviodeemail.adapters.inbound.resources.exception.EmailNotFound;
+import me.gabreuw.microsservicoenviodeemail.application.domain.Email;
+import me.gabreuw.microsservicoenviodeemail.application.domain.PageInfo;
+import me.gabreuw.microsservicoenviodeemail.application.ports.EmailServicePort;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
+import java.util.List;
+import java.util.UUID;
+
 import static org.springframework.http.HttpStatus.CREATED;
 
-@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 @RestController
+@RequiredArgsConstructor
 public class EmailResource {
 
-    private final EmailServiceImpl SERVICE;
+    private final EmailServicePort emailService;
 
     @PostMapping(path = "/sending-email")
-    public ResponseEntity<EmailModel> sendingEmail(
+    public ResponseEntity<Email> sendingEmail(
             @RequestBody @Valid EmailDTO emailDTO
     ) {
-        EmailModel emailModel = new EmailModel();
-        BeanUtils.copyProperties(emailDTO, emailModel);
+        Email email = new Email();
+        BeanUtils.copyProperties(emailDTO, email);
 
-        SERVICE.sendEmail(emailModel);
+        emailService.sendEmail(email);
 
         return ResponseEntity
                 .status(CREATED)
-                .body(emailModel);
+                .body(email);
+    }
+
+    @GetMapping(path = "/emails")
+    public ResponseEntity<Page<Email>> findAllEmails(
+            @PageableDefault(
+                    size = 5,
+                    sort = "emailId",
+                    direction = Sort.Direction.DESC
+            ) Pageable pageable
+    ) {
+        PageInfo pageInfo = new PageInfo();
+        BeanUtils.copyProperties(pageable, pageInfo);
+
+        List<Email> emails = emailService.findAll(pageInfo);
+
+        PageImpl<Email> responsePage = new PageImpl<>(emails, pageable, emails.size());
+
+        return ResponseEntity
+                .ok()
+                .body(responsePage);
+    }
+
+    @GetMapping(path = "/emails/{emailId}")
+    public ResponseEntity<Email> findEmailById(@PathVariable UUID emailId) {
+        Email email = emailService
+                .findById(emailId)
+                .orElseThrow(() -> new EmailNotFound(emailId));
+
+        return ResponseEntity
+                .ok()
+                .body(email);
     }
 
 }

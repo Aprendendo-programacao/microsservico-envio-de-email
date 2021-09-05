@@ -1,4 +1,4 @@
-package me.gabreuw.microsservicoenviodeemail.adapters.inbound.dtos;
+package me.gabreuw.microsservicoenviodeemail.adapters.dtos;
 
 import lombok.Data;
 
