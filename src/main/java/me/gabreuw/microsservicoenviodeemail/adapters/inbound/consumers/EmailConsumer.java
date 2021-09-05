@@ -2,8 +2,8 @@ package me.gabreuw.microsservicoenviodeemail.adapters.inbound.consumers;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import me.gabreuw.microsservicoenviodeemail.adapters.inbound.dtos.EmailDTO;
-import me.gabreuw.microsservicoenviodeemail.application.entities.EmailModel;
+import me.gabreuw.microsservicoenviodeemail.adapters.dtos.EmailDTO;
+import me.gabreuw.microsservicoenviodeemail.application.domain.Email;
 import me.gabreuw.microsservicoenviodeemail.application.services.EmailServiceImpl;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.BeanUtils;
@@ -20,13 +20,13 @@ public class EmailConsumer {
 
     @RabbitListener(queues = "${spring.rabbitmq.queue}")
     public void listen(@Payload EmailDTO emailDTO) {
-        EmailModel emailModel = new EmailModel();
+        Email email = new Email();
 
-        BeanUtils.copyProperties(emailDTO, emailModel);
+        BeanUtils.copyProperties(emailDTO, email);
 
-        emailServiceImpl.sendEmail(emailModel);
+        emailServiceImpl.sendEmail(email);
 
-        log.info("Email status: {}", emailModel.getStatusEmail().toString());
+        log.info("Email status: {}", email.getStatusEmail().toString());
     }
 
 }
