@@ -23,3 +23,6 @@ services:
       - "9000:80"
     depends_on:
       - postgres
+
+volumes:
+  pgdata:
